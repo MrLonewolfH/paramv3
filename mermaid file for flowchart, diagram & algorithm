@@ -1,0 +1,81 @@
+flowchart TD
+
+subgraph group_routing_shell["Routing And Shell"]
+  node_next_entry["Next Entry<br/>[page.tsx]"]
+  node_site_shell["Site Shell<br/>[layout.tsx]"]
+end
+
+subgraph group_academic_content["Academic Content"]
+  node_homepage["Param Homepage<br/>[index.html]"]
+  node_about_content["About And Methodology"]
+  node_course_catalog["Course Catalog"]
+  node_faculty_profiles["Faculty Profiles"]
+  node_results_stories["Results And Stories"]
+  node_resource_hub["Resources Hub"]
+end
+
+subgraph group_lead_conversion["Lead Conversion"]
+  node_contact_page["Admissions Contact"]
+  node_enquiry_form["Enquiry Form<br/>[index.html]"]
+  node_message_preparer["Message Preparer<br/>[main.js]"]
+end
+
+subgraph group_interactive_experience["Interactive Experience"]
+  node_interaction_controller["Interaction Controller<br/>[main.js]"]
+  node_learning_scene["Learning Scene<br/>[param-scene.js]"]
+  node_media_assets["Media Assets"]
+end
+
+node_prospective_student(("Prospective Student"))
+node_whatsapp["WhatsApp"]
+node_email_client["Email Client"]
+node_analytics_service["Analytics Service"]
+
+node_prospective_student -->|"opens site"| node_next_entry
+node_next_entry -->|"redirects to"| node_homepage
+node_site_shell -.->|"renders analytics"| node_analytics_service
+node_prospective_student -->|"reads content"| node_homepage
+node_homepage -->|"links about"| node_about_content
+node_homepage -->|"links courses"| node_course_catalog
+node_homepage -->|"links faculty"| node_faculty_profiles
+node_homepage -->|"links results"| node_results_stories
+node_homepage -->|"links resources"| node_resource_hub
+node_homepage -->|"links contact"| node_contact_page
+node_homepage -->|"loads controller"| node_interaction_controller
+node_course_catalog -->|"opens course dialog"| node_interaction_controller
+node_results_stories -->|"controls stories"| node_interaction_controller
+node_prospective_student -->|"enters enquiry"| node_enquiry_form
+node_enquiry_form -->|"submits fields"| node_interaction_controller
+node_interaction_controller -->|"validates enquiry"| node_message_preparer
+node_message_preparer -.->|"prepares handoff"| node_whatsapp
+node_message_preparer -.->|"prepares email"| node_email_client
+node_interaction_controller -->|"loads scene"| node_learning_scene
+node_learning_scene -->|"reads visual styles"| node_media_assets
+
+click node_next_entry "https://github.com/mrlonewolfh/paramv3/blob/main/app/page.tsx"
+click node_site_shell "https://github.com/mrlonewolfh/paramv3/blob/main/app/layout.tsx"
+click node_homepage "https://github.com/mrlonewolfh/paramv3/blob/main/public/param/index.html"
+click node_about_content "https://github.com/mrlonewolfh/paramv3/tree/main/public/param"
+click node_course_catalog "https://github.com/mrlonewolfh/paramv3/tree/main/public/param"
+click node_faculty_profiles "https://github.com/mrlonewolfh/paramv3/tree/main/public/param"
+click node_results_stories "https://github.com/mrlonewolfh/paramv3/tree/main/public/param"
+click node_resource_hub "https://github.com/mrlonewolfh/paramv3/tree/main/public/param"
+click node_contact_page "https://github.com/mrlonewolfh/paramv3/tree/main/public/param"
+click node_interaction_controller "https://github.com/mrlonewolfh/paramv3/blob/main/public/param/main.js"
+click node_enquiry_form "https://github.com/mrlonewolfh/paramv3/blob/main/public/param/index.html"
+click node_message_preparer "https://github.com/mrlonewolfh/paramv3/blob/main/public/param/main.js"
+click node_learning_scene "https://github.com/mrlonewolfh/paramv3/blob/main/lib/param-scene.js"
+click node_media_assets "https://github.com/mrlonewolfh/paramv3/tree/main/public/param/assets"
+
+classDef toneNeutral fill:#f8fafc,stroke:#334155,stroke-width:1.5px,color:#0f172a
+classDef toneBlue fill:#dbeafe,stroke:#2563eb,stroke-width:1.5px,color:#172554
+classDef toneAmber fill:#fef3c7,stroke:#d97706,stroke-width:1.5px,color:#78350f
+classDef toneMint fill:#dcfce7,stroke:#16a34a,stroke-width:1.5px,color:#14532d
+classDef toneRose fill:#ffe4e6,stroke:#e11d48,stroke-width:1.5px,color:#881337
+classDef toneIndigo fill:#e0e7ff,stroke:#4f46e5,stroke-width:1.5px,color:#312e81
+classDef toneTeal fill:#ccfbf1,stroke:#0f766e,stroke-width:1.5px,color:#134e4a
+class node_next_entry,node_site_shell,node_email_client toneBlue
+class node_homepage,node_about_content,node_course_catalog,node_faculty_profiles,node_results_stories,node_resource_hub toneAmber
+class node_contact_page,node_enquiry_form,node_message_preparer toneMint
+class node_interaction_controller,node_learning_scene,node_media_assets toneRose
+class node_prospective_student,node_whatsapp,node_analytics_service toneIndigo
