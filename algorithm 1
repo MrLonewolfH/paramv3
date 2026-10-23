@@ -1,0 +1,99 @@
+ALGORITHM PARAM_SITE(request)
+
+1. ROUTE
+   IF request.path == "/"
+      redirect to "/param/index.html"
+   ELSE IF request.path == "/param/index.html"
+      serve the public HTML page
+   END IF
+
+2. START PAGE
+   Parse the HTML, load styles.css, then run main.js after parsing.
+
+   Set motionEnabled to false if:
+      reduced motion is requested, OR
+      the connection requests data saving, OR
+      the connection is 2G/slow-2G.
+   Otherwise set motionEnabled to true.
+
+   Update motion controls and register navigation, course, dialog,
+   story, gallery, enquiry, reveal, tilt, and page-lifecycle handlers.
+
+   Schedule the learning scene to load when the browser is idle,
+   with a 1.8-second timeout; use a 500 ms timer if idle callbacks
+   are unavailable.
+
+3. PROCESS UI EVENTS
+   ON navigation toggle:
+      open or close the mobile menu
+      close it after a link click, Escape, outside click, or desktop resize
+      update the active section as the page scrolls
+
+   ON course filter:
+      show cards matching the selected category, or all cards
+      update the selected filter and visible-course count
+
+   ON course link:
+      if the course has a detail page, select it and open its dialog
+      show only that course's content
+      otherwise follow the link to the enquiry section
+
+   ON course-dialog enquiry:
+      close the dialog
+      reset the enquiry view
+      preselect the chosen course and focus the name field
+
+   ON story controls:
+      move to the previous, next, or selected story
+      wrap from the last story to the first, and vice versa
+
+   ON gallery item or controls:
+      open the image dialog with its image, alt text, caption, and count
+      move between images with buttons or arrow keys, wrapping at either end
+
+   ON generic dialog open/close:
+      remember and restore focus
+      pause the scene while a dialog is open
+      resume it when all dialogs are closed and motion is enabled
+
+4. PROCESS ENQUIRY SUBMISSION
+   Prevent the browser's normal form submission.
+
+   Clean the name and phone fields:
+      replace control characters with spaces, trim, and limit their lengths
+   Clean the optional note the same way, with a 500-character limit.
+
+   Validate:
+      name has at least 2 characters and contains a Unicode letter
+      phone contains only an optional leading "+", digits, spaces,
+         parentheses, or hyphens, and has 10–15 digits
+      class is one of the form's listed options
+      course is one of the configured course choices
+
+   IF any validation fails:
+      display every applicable error
+      focus the first invalid field
+      stop
+
+   Build the enquiry message from the student's name, phone, class,
+   course, and optional note.
+
+   Create:
+      a WhatsApp link with the message prefilled
+      an email link to sb@goparam.com with a course-specific subject
+
+   Show the prepared-message view and wait for the visitor to choose
+   WhatsApp, email, or copy.
+   The visitor must complete sending in their chosen app; the site
+   does not submit the form to a backend or book a demo.
+
+5. PROCESS MOTION AND PAGE LIFECYCLE
+   Load the bundled scene only when motion is enabled and the scene
+   is neither loaded, loading, nor marked failed.
+   If scene loading or rendering fails, keep the static scene image
+   and show the fallback status.
+
+   Pause the scene when it is off-screen, the tab is hidden, motion
+   is disabled, or a dialog opens.
+   Dispose it when the page is closed; pause and resume it around
+   back-forward-cache navigation.
